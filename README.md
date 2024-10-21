@@ -34,7 +34,9 @@ $scorePart->setInstrument($instrument);
 #### Measures, notes...
 ```php
 $measure = $scorePart->getPart()->createMeasure();
-$measure->transpose(-9); // We have added an Eb alto saxophone, so we transpose the measure to Eb (the following measures will keep this property)
+
+// We have added an Eb alto saxophone, so we transpose the measure to Eb (the following measures will keep this property)
+$measure->transpose(-9);
 
 // Setting clef, time signature and fifths (this will be also kept by the following measures until it's not changed)
 // Defaults: clef: G (violin), time: 4/4, fifths: 0 (C / Am)
@@ -47,7 +49,8 @@ $measure
     $key->setFifths(-2); // adding 2 flats (Bb, Eb)
   })
   ->time(function (Time $time) {
-    $time->setBeats(4)->setBeatType(4)->useSymbols(); // 4 (beats) / 4 (beat type) - using symbols: adding common time for 4/4 and cut time for 2/2
+    // 4 (beats) / 4 (beat type) - using symbols: adding common time for 4/4 and cut time for 2/2
+    $time->setBeats(4)->setBeatType(4)->useSymbols();
   });
 
 // Adding some notes and rests
