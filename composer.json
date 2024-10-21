@@ -11,6 +11,9 @@
             "name": "MuseFx"
         }
     ],
+    "license": [
+       "MIT"
+   ],
     "require": {
         "php": ">8.0",
         "ext-bcmath": "*"
