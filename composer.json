@@ -1,6 +1,14 @@
 {
     "name": "musefx/php-music-xml",
     "description": "Create MusicXML files with PHP",
+    "keywords": [
+        "Music",
+        "Music notation",
+        "MusicXML",
+        "MIDI",
+        "Sheet music",
+        "Music score"
+    ],
     "autoload": {
         "psr-4": {
             "MuseFx\\PhpMusicXml\\": "src/"
