@@ -64,3 +64,9 @@ $measure->addNote('A#', 4, Beat::TYPE_EIGHTH)
 // Next measure..
 $measure = $scorePart->getPart()->createMeasure();
 ```
+
+## API reference
+In progress...
+
+## Donations
+<a href="https://buymeacoffee.musefx.cloud-ip.biz/" target="_blank">Buy me a ☕</a>
