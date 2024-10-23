@@ -138,7 +138,7 @@ $measure->addDirection()->setDynamics()->mf(); // Start mezzoforte
 /* ... */
 $measure->addDirection()->startDiminuendo(); // Add diminuendo
 /* ... */
-$measure->addDirection()->endDiminuendo(); End diminuendo
+$measure->addDirection()->endDiminuendo(); // End diminuendo
 $measure->addDirection()->setDynamics()->p(); // Ends with piano
 /* ... */
 ```
@@ -231,7 +231,7 @@ $measure->addNote('C', 1, Beat::TYPE_QUARTER)->dot();
 // Tuplets
 // addTuplet($into, $from, $callback). A triplet is 2 into 3, so its addTuplet(3, 2, function () { ... })
 $measure->addTuplet(3, 2, function (Tuplet $tuplet) {
-  $tuplet->addRoot('C', 4, Beat::TYPE_EIGTH);
+  $tuplet->addNote('C', 4, Beat::TYPE_EIGTH);
   $tuplet->addNote('E', 4, Beat::TYPE_EIGTH);
   $tuplet->addNote('G', 4, Beat::TYPE_EIGTH);
 });
