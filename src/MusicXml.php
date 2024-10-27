@@ -4,7 +4,10 @@ namespace MuseFx\PhpMusicXml;
 
 use MuseFx\PhpMusicXml\Elements\ScorePartwise;
 use DOMDocument;
+use DOMElement;
 use DOMImplementation;
+use DOMNode;
+use ReflectionClass;
 
 class MusicXml
 {
@@ -20,6 +23,11 @@ class MusicXml
      * @var ScorePartwise
      */
     protected ScorePartwise $score;
+
+    /**
+     * @var string
+     */
+    protected string $serializedDocument;
 
     public function __construct()
     {
@@ -50,6 +58,14 @@ class MusicXml
     }
 
     /**
+     * @return ScorePartwise
+     */
+    public function getScore(): ScorePartwise
+    {
+        return $this->score;
+    }
+
+    /**
      * @param int $options
      *
      * @return string
@@ -71,7 +87,7 @@ class MusicXml
      */
     public function getDocument(): DOMDocument
     {
-        return $this->document;
+        return $this->wakeupDocument()->document;
     }
 
     /**
@@ -85,6 +101,56 @@ class MusicXml
             foreach ($part->getPart()->getMeasures() as $measure) {
                 $measure->addNotes($checkMeasures);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return void
+     */
+    public function __sleep()
+    {
+        $this->fine(false);
+        $mxmlId = 1;
+        foreach ($this->document->getElementsByTagName('*') as $node) {
+            if ($node instanceof DOMElement) {
+                $node->setAttribute('mxml-id', $mxmlId++);
+            }
+        }
+
+        $this->serializedDocument = $this->document->saveXML();
+
+        $properties = [];
+        $reflect = new ReflectionClass($this);
+        foreach ($reflect->getProperties() as $property) {
+            if ($property->isInitialized($this)) {
+                $value = $property->getValue($this);
+                if (!$value instanceof DOMDocument) {
+                    $properties[] = $property->getName();
+                }
+            }
+        }
+
+        return $properties;
+    }
+
+    /**
+     * @return void
+     */
+    public function __wakeup()
+    {
+        $this->wakeupDocument();
+    }
+
+    /**
+     * @return self
+     */
+    protected function wakeupDocument(): self
+    {
+        if (empty($this->document)) {
+            $this->document = new DOMDocument();
+            $this->document->loadXML($this->serializedDocument);
         }
 
         return $this;

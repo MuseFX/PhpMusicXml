@@ -4,7 +4,9 @@ namespace MuseFx\PhpMusicXml\Elements;
 
 use MuseFx\PhpMusicXml\MusicXml;
 use DOMDocument;
+use DOMElement;
 use DOMNode;
+use ReflectionClass;
 
 abstract class Element
 {
@@ -17,6 +19,11 @@ abstract class Element
      * @var DOMNode
      */
     protected DOMNode $element;
+
+    /**
+     * @var string
+     */
+    protected string $serializedElement;
 
     /**
      * @var MusicXml
@@ -116,5 +123,42 @@ abstract class Element
     public function getAttribute(string $attribute)
     {
         return $this->element->getAttribute($attribute);
+    }
+
+    /**
+     * @return void
+     */
+    public function __sleep()
+    {
+        $this->serializedElement = $this->getAttribute('mxml-id');
+
+        $properties = [];
+        $reflect = new ReflectionClass($this);
+        foreach ($reflect->getProperties() as $property) {
+            if ($property->isInitialized($this)) {
+                $value = $property->getValue($this);
+                if (!$value instanceof DOMNode && !$value instanceof DOMElement) {
+                    $properties[] = $property->getName();
+                }
+            }
+        }
+
+        return $properties;
+    }
+
+    /**
+     * @return void
+     */
+    public function __wakeup()
+    {
+        $elements = $this->document->getDocument()->getElementsByTagName($this->getElementName());
+        foreach ($elements as $element) {
+            $mxmlId = $element->getAttribute('mxml-id');
+            if ($mxmlId == $this->serializedElement) {
+                $this->element = $element;
+                $this->element->removeAttribute('mxml-id');
+                break;
+            }
+        }
     }
 }

@@ -2,6 +2,7 @@
 
 namespace MuseFx\PhpMusicXml\Elements;
 
+use MuseFx\PhpMusicXml\Exceptions\Exception as MusicXmlException;
 use MuseFx\PhpMusicXml\MusicXml;
 
 class PartList extends Element
@@ -26,6 +27,23 @@ class PartList extends Element
         $this->parts[$id] = $scorePart;
 
         return $scorePart;
+    }
+
+    /**
+     * @param string $id
+     *
+     * @return ScorePart
+     *
+     * @throws MusicXmlException
+     */
+    public function getScorePart(string $id): ScorePart
+    {
+        $part = $this->parts[$id] ?? null;
+        if (empty($part)) {
+            throw new MusicXmlException('Part `' . $id . '` not found.');
+        }
+
+        return $part;
     }
 
     /**
