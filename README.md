@@ -282,4 +282,4 @@ $measure->addRest(Beat::TYPE_QUARTER)->toVoice(2);
 In progress...
 
 ## Donations
-<a href="https://buymeacoffee.musefx.cloud-ip.biz/" target="_blank">Buy me a ☕</a>
+<a href="https://buymeacoffee.musefx.eu/" target="_blank">Buy me a ☕</a>
